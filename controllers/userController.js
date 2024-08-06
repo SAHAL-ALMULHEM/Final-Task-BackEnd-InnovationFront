@@ -1,13 +1,13 @@
-const Admin = require('../models/StudentModel');
+const User = require('../models/UserModel');
 
 const getAllUsers = async (req, res, next) => {
-    const users = await Admin.find();
+    const users = await User.find();
     res.status(200).json({users});
 };
 
 const getUserById = async (req, res, next) => {
     const id = req.params.id;
-    const user = await Admin.findById(id);
+    const user = await User.findById(id);
     if (!user) {
         const error = new Error("User id not found");
         error.statusCode = 400;
@@ -18,15 +18,15 @@ const getUserById = async (req, res, next) => {
 
 const creatUser = async (req, res, next) => {
     const data = req.body;
-    const user = new Admin(data);
-    await Admin.create(user);
+    const user = new User(data);
+    await User.create(user);
     res.status(201).json({user});
 };
 
 const updateUser = async (req, res, next) => {
     const id = req.params.id;
     const data = req.body;
-    const user = await Admin.findByIdAndUpdate(id, data, {new: true});
+    const user = await User.findByIdAndUpdate(id, data, {new: true});
     if (!user) {
         const error = new Error("User id not found");
         error.statusCode = 404;
@@ -37,7 +37,7 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
     const id = req.params.id;
-    const user = await Admin.findByIdAndDelete(id);
+    const user = await User.findByIdAndDelete(id);
     if (!user) {
         const error = new Error("User id not found");
         error.statusCode = 404;

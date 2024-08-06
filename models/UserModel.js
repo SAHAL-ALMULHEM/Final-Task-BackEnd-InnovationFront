@@ -3,7 +3,7 @@ const bcrypt = require ('bcrypt');
 const validator = require ('validator');
 const crypto = require ('crypto');
 
-const StudentSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
 firstname: {
     type: String,
     required: [true, 'first name is required'],
@@ -47,27 +47,15 @@ lastname: {
     },
     role: {
         type: String,
-        enum: ['student','admin'],
-        default: 'student'
-    },
-    grade: {
-        type: String,
-        required: [true, 'grade is required'],
-        validate:{
-            validator: (v) => v >= 0 && v <= 100,
-            message: props => `${props.value} is not a valid grade. Must be between 0 and 100.`
-        }
-    },
-    courses: {
-        type: [String],
-        required: [true, 'courses is required'],
+        enum: ['user','admin'],
+        default: 'user'
     },
 
     resetPasswordToken: String,
     resetPasswordExpires: Date
 });
 
-StudentSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function(next) {
     if (this.isModified('password') || this.isNew){
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
@@ -75,4 +63,4 @@ StudentSchema.pre('save', async function(next) {
     next();
 });
 
-module.exports = mongoose.model('Student',StudentSchema);
+module.exports = mongoose.model('User',UserSchema);

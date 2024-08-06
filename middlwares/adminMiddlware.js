@@ -15,7 +15,7 @@ const adminMiddlware = (req, res, next) => {
         if (decoded.role !== 'admin') {
             return res.status(403).json({ message: 'Access denied, Only Admins'});
         }
-        req.student = decoded;
+        req.user = decoded;
         next();
     } catch (e) {
         res.status(400).json({ message: 'token invalid'});
